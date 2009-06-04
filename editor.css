@@ -1,0 +1,132 @@
+body, ul, li, div {
+	margin: 0;
+	padding: 0;
+}
+ul.toolbar {
+	width: 100%;
+	height: 16px;
+	background-color: #ccc;
+	list-style-type: none;
+}
+ul.toolbar > li {
+	text-indent: -5000px;
+	float: left;
+	width: 16px;
+	height: 16px;
+}
+ul.toolbar > li.spacer { /* CSS abuse. Meh. */
+	width: 8px;
+}
+ul.toolbar > li.play {
+	background-image: url(control_play.png);
+}
+ul.toolbar > li.pause {
+	background-image: url(control_pause.png);
+}
+ul.toolbar > li.stop {
+	background-image: url(control_stop.png);
+}
+ul.toolbar > li.export {
+	background-image: url(cog_go.png);
+}
+
+.block_viewer {
+	clear: both;
+	background-color: #008888;
+}
+
+svg.block_viewer_viewport .border {
+	fill: #eff;
+	stroke: black;
+}
+
+svg.block_viewer_viewport .block rect {
+	fill: #cee;
+	stroke: black;
+}
+svg.block_viewer_viewport .block.focused rect {
+	fill: #088;
+}
+svg.block_viewer_viewport .block .block_label {
+	text-anchor: middle;
+	dominant-baseline: central;
+}
+svg.block_viewer_viewport .input_socket circle {
+	fill: white;
+	stroke: black;
+}
+svg.block_viewer_viewport .input_socket.captured circle {
+	fill: black;
+}
+svg.block_viewer_viewport .input_socket text {
+	font-size: 0.6em;
+	dominant-baseline: central;
+}
+svg.block_viewer_viewport .output_socket circle {
+	fill: white;
+	stroke: black;
+}
+svg.block_viewer_viewport .output_socket.captured circle {
+	fill: black;
+}
+svg.block_viewer_viewport .output_socket text {
+	text-anchor: end;
+	dominant-baseline: central;
+	font-size: 0.6em;
+}
+
+svg.block_viewer_viewport line.connection {
+	stroke: black;
+	stroke-width: 2px;
+	cursor: pointer;
+}
+svg.block_viewer_viewport line.connection.selected {
+	stroke: #800;
+}
+
+svg.block_viewer_viewport line.dangling_connection {
+	stroke: #888;
+}
+
+#canvas {
+	float: left;
+}
+#param_editor {
+	float: right;
+	height: 240px;
+	width: 320px;
+	background-color: #ffd;
+}
+#param_editor ul.params {
+	list-style-type: none;
+}
+#param_editor ul.params li.param {
+	border-bottom: 1px solid #888;
+	line-height: 32px;
+	height: 32px;
+}
+#param_editor ul.params li.param > label {
+	float: left;
+	width: 80px;
+}
+#param_editor ul.params li.param > div.param_value {
+	float: left;
+	width: 240px;
+}
+
+/* slider */
+div.slider_bar {
+	height: 21px;
+	position: relative;
+	background-image: url(editor/slider.png);
+}
+div.slider_pointer {
+	width: 11px;
+	height: 21px;
+	position: absolute;
+	left: -5px;
+	background-image: url(editor/pointer.png);
+}
+div.slider_pointer.active{
+	background-image: url(editor/pointer_active.png);
+}

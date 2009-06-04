@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<link rel="stylesheet" href="editor.css" type="text/css" />
+		<script type="text/javascript" src="editor/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="editor/jquery.drag.js"></script>
+		<script type="text/javascript" src="editor/jquery.json.js"></script>
+		<script type="text/javascript" src="editor/jquery.dimensions.js"></script>
+		<script type="text/javascript" src="patterns.js"></script>
+		<script type="text/javascript" src="editor/builder.js"></script>
+		<script type="text/javascript" src="framework_full/block_types.js"></script>
+		<script type="text/javascript" src="editor/block_viewer.js"></script>
+		<script type="text/javascript" src="editor.js"></script>
+
+		<script type="text/javascript" src="framework_full/source_types.js"></script>
+		<script type="text/javascript" src="framework_full/parameters.js"></script>
+		<script type="text/javascript" src="framework_full/input_socket.js"></script>
+
+		<script type="text/javascript" src="framework_full/block.js"></script>
+		<script type="text/javascript" src="framework_full/metablock.js"></script>
+		<script type="text/javascript" src="blocks/timer.js"></script>
+		<script type="text/javascript" src="blocks/lissajous.js"></script>
+		<script type="text/javascript" src="blocks/box.js"></script>
+		<script type="text/javascript" src="blocks/canvas.js"></script>
+		<script type="text/javascript" src="blocks/camera.js"></script>
+		<script type="text/javascript" src="blocks/models.js"></script>
+		<script type="text/javascript" src="blocks/transforms.js"></script>
+
+		<script type="text/javascript" src="new_demo.js"></script>
+	</head>
+	<body>
+		<ul class="toolbar">
+			<li class="play">play</li>
+			<li class="pause">play</li>
+			<li class="stop">stop</li>
+			<li class="spacer"></li>
+			<li class="export">export</li>
+		</ul>
+		<canvas id="canvas" width="320" height="240"></canvas>
+		<div id="param_editor"><ul class="params"></ul></div>
+		<div id="block_viewer" class="block_viewer">
+			<select class="block_types_palette"><option>-- add block --</option></select>
+			<svg xmlns="http://www.w3.org/2000/svg" class="block_viewer_viewport" width="100%" height="200">
+				<rect width="100%" height="100%" class="border" />
+			</svg>
+		</div>
+	</body>
+</html>
