@@ -25,11 +25,12 @@ function BlockViewerBlockView(block, blockViewer) {
 			if (selectedBlocks.contains(block)) {
 				deselectBlock(block);
 			} else {
-				selectBlock(block, false);
+				selectBlock(block);
 			}
 		} else {
 			focusBlock(block);
-			selectConnection(null);
+			deselectAllBlocks();
+			deselectAllConnections();
 			selectBlock(block, true);
 		}
 	});
@@ -286,17 +287,28 @@ function BlockViewerConnectionView(connection, blockViewer) {
 	inputView.addConnectionView(this);
 
 	var self = this;
-	$(this.line).click(function() {
-		selectConnection(self.connection);
-		defocusFocusedBlock();
+	$(this.line).mousedown(function(e) {
+		if (e.metaKey) {
+			/* keep other blocks and connections selected */
+			if (selectedConnections.contains(connection)) {
+				deselectConnection(connection);
+			} else {
+				selectConnection(connection);
+			}
+		} else {
+			defocusFocusedBlock();
+			deselectAllBlocks();
+			deselectAllConnections();
+			selectConnection(self.connection);
+		}
 		return false;
 	})
 
 	connection.selectEvent.attach(function() {
-		self.line.setAttribute('class', 'connection selected');
+		$(self.line).xAddClass('selected');
 	})
 	connection.deselectEvent.attach(function() {
-		self.line.setAttribute('class', 'connection');
+		$(self.line).xRemoveClass('selected');
 	})
 
 	// Destroy view when connection is destroyed
@@ -351,8 +363,8 @@ function BlockViewer(htmlId, metablock) {
 	$(this.svg).mousedown(function(e) {
 		defocusFocusedBlock();
 		if (!e.metaKey) {
-			selectConnection(null);
-			selectedBlocks.each(function(block) {deselectBlock(block);})
+			deselectAllBlocks();
+			deselectAllConnections();
 		}
 	});
 	metablock.attachOnAddBlock(function(block) {

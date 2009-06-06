@@ -47,12 +47,22 @@ function SingleInputSocket(opts) {
 			attachOnDestroy: function(callback) {this.destroyEvent.attach(callback);},
 			detachOnDestroy: function(callback) {this.destroyEvent.detach(callback);},
 			destroy: function() {
+				if (this.isSelected) deselectConnection(this);
 				this.destroyEvent.send();
 				disconnectSource(output.source);
 				connectFallbackParameter();
 				socket.connection = null;
 				if (output.connections) output.connections.remove(this); // FIXME: can this be made unconditional?
 				if (opts.onChangeState) opts.onChangeState();
+			},
+			isSelected: false,
+			doSelectActions: function() {
+				this.isSelected = true;
+				this.selectEvent.send();
+			},
+			doDeselectActions: function() {
+				this.isSelected = false;
+				this.deselectEvent.send();
 			}
 		}
 		if (output.connections) output.connections.add(this.connection); // FIXME: can this be made unconditional?
@@ -114,6 +124,15 @@ function MultipleInputSocket(opts) {
 				socket.connections.remove(this);
 				if (output.connections) output.connections.remove(this);
 				if (opts.onChangeState) opts.onChangeState();
+			},
+			isSelected: false,
+			doSelectActions: function() {
+				this.isSelected = true;
+				this.selectEvent.send();
+			},
+			doDeselectActions: function() {
+				this.isSelected = false;
+				this.deselectEvent.send();
 			}
 		}
 		this.connections.add(connection);

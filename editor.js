@@ -44,12 +44,11 @@ function defocusFocusedBlock() {
 }
 
 var selectedBlocks = new Set();
-function selectBlock(block, deselectOthers) {
-	if (deselectOthers) {
-		selectedBlocks.each(function(block) {deselectBlock(block);});
-	} else {
-		if (selectedBlocks.contains(block)) return;
-	}
+function deselectAllBlocks() {
+	selectedBlocks.each(function(block) {deselectBlock(block);});
+}
+function selectBlock(block) {
+	if (selectedBlocks.contains(block)) return;
 	selectedBlocks.add(block);
 	block.doSelectActions();
 }
@@ -59,12 +58,19 @@ function deselectBlock(block) {
 	block.doDeselectActions();
 }
 
-var selectedConnection = null;
+var selectedConnections = new Set();
+function deselectAllConnections() {
+	selectedConnections.each(function(connection) {deselectConnection(connection)});
+}
 function selectConnection(connection) {
-	if (connection == selectedConnection) return;
-	if (selectedConnection != null) selectedConnection.deselectEvent.send();
-	selectedConnection = connection;
-	if (connection != null) connection.selectEvent.send();
+	if (selectedConnections.contains(connection)) return;
+	selectedConnections.add(connection);
+	connection.doSelectActions();
+}
+function deselectConnection(connection) {
+	if (!selectedConnections.contains(connection)) return;
+	selectedConnections.remove(connection);
+	connection.doDeselectActions();
 }
 
 /* connect up toolbar */
@@ -80,10 +86,9 @@ onBrowserLoad(function() {
 
 $(window).keypress(function(e) {
 	if (e.metaKey && e.which == 8) { // cmd + delete
-		if (selectedConnection) {
-			selectedConnection.destroy();
-			selectedConnection = null;
-		}
+		selectedConnections.each(function(connection) {
+			connection.destroy();
+		})
 		selectedBlocks.each(function(block) {
 			block.destroy();
 		})
