@@ -7,13 +7,11 @@ function LissajousBlock(opts) {
 	//this.defineParameter('amplitude', ConstantParameter, {value: 100});
 	this.parameters.amplitude.source.changeEvent.attach(this.changeEvent.relay);
 
-	this.defineParameter('time', ConstantParameter, {value: 0});
-
 	var self = this;
 	this.defineInput(new SingleInputSocket({
 		name: 'time',
 		type: SourceTypes.Time,
-		fallbackParameter: this.parameters.time,
+		default: 0, //NB if we listened to any other events of SourceTypes.Time besides changeEvent, we couldn't simply use a ConstantParameter of 0
 		events: {changeEvent: this.changeEvent.relay},
 		onChangeState: this.changeEvent.relay
 	}));

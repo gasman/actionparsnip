@@ -19,10 +19,19 @@ function BlockViewerBlockView(block, blockViewer) {
 			block.parameters.viewPosition.set({x:dragStartX + e.offsetX, y: dragStartY + e.offsetY});
 		},
 		function() {}
-	).click(function() {
-		focusBlock(block);
-		selectConnection(null);
-		return false;
+	).mousedown(function(e) {
+		if (e.metaKey) {
+			/* keep other blocks and connections selected */
+			if (selectedBlocks.contains(block)) {
+				deselectBlock(block);
+			} else {
+				selectBlock(block, false);
+			}
+		} else {
+			focusBlock(block);
+			selectConnection(null);
+			selectBlock(block, true);
+		}
 	});
 	
 	var self = this;
@@ -46,6 +55,11 @@ function BlockViewerBlockView(block, blockViewer) {
 	this.onBlockDefocus = bind(this, this.defocus);
 	this.block.defocusEvent.attach(this.onBlockDefocus);
 
+	this.onBlockSelect = bind(this, this.select);
+	this.block.selectEvent.attach(this.onBlockSelect);
+	this.onBlockDeselect = bind(this, this.deselect);
+	this.block.deselectEvent.attach(this.onBlockDeselect);
+
 	this.onBlockDestroy = bind(this, this.destroy);
 	this.block.attachOnDestroy(this.onBlockDestroy);
 }
@@ -68,10 +82,16 @@ extend(BlockViewerBlockView.prototype, {
 		})
 	},
 	focus: function() {
-		this.group.setAttribute('class', 'block focused');
+		$(this.group).xAddClass('focused');
 	},
 	defocus: function() {
-		this.group.setAttribute('class', 'block');
+		$(this.group).xRemoveClass('focused');
+	},
+	select: function() {
+		$(this.group).xAddClass('selected');
+	},
+	deselect: function() {
+		$(this.group).xRemoveClass('selected');
 	},
 	destroy: function() {
 		this.block.parameters.viewPosition.source.changeEvent.detach(this.onChangePosition);
@@ -328,9 +348,12 @@ function BlockViewer(htmlId, metablock) {
 	this.outputViewsById = {};
 	this.metablock = metablock;
 	var self = this;
-	$(this.svg).click(function() {
+	$(this.svg).mousedown(function(e) {
 		defocusFocusedBlock();
-		selectConnection(null);
+		if (!e.metaKey) {
+			selectConnection(null);
+			selectedBlocks.each(function(block) {deselectBlock(block);})
+		}
 	});
 	metablock.attachOnAddBlock(function(block) {
 		self.blockViewsById[block.id] = new BlockViewerBlockView(block, self);

@@ -5,17 +5,16 @@ function XRotationBlock(opts) {
 	var self = this;
 
 	// this.defineParameter({name: 'rotation', type: 'range', min: 0, max: 2*Math.PI});
-	this.defineParameter('rotation', ConstantParameter, {value: 0});
+	this.defineParameter('rotation', SliderParameter, {value: 0, min: 0, max: 2*Math.PI});
 	this.parameters.rotation.source.changeEvent.attach(function() {
 		self.cached = false;
 		self.changeEvent.send();
 	});
-	this.defineParameter('model', NullModelParameter);
 
 	this.defineInput(new SingleInputSocket({
 		name: 'model',
 		type: SourceTypes.Model,
-		fallbackParameter: self.parameters.model,
+		fallbackSource: nullModelSource,
 		events: {changeEvent: function() {
 			self.cached = false; /* TODO: have model define a changeTransformEvent so that we don't bother recalculating for other types of change */
 			self.changeEvent.send();

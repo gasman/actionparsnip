@@ -5,8 +5,6 @@ function TimerBlock(opts) {
 	this.playing = false;
 	this.currentTime = 0;
 	
-	this.defineParameter('timeControl', TimeControlParameter);
-	
 	var self = this;
 	
 	var start = function() {
@@ -33,7 +31,7 @@ function TimerBlock(opts) {
 	this.defineInput(new SingleInputSocket({
 		name: 'timeControl',
 		type: SourceTypes.TimeControl,
-		fallbackParameter: self.parameters.timeControl,
+		fallbackSource: nullTimeControlSource,
 		events: {startEvent: start, pauseEvent: pause, stopEvent: stop}
 	}));
 	

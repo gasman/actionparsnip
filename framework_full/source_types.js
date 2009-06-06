@@ -19,3 +19,18 @@ SourceTypes.Time = new SourceType([SourceTypes.Scalar]);
 SourceTypes.Coordinates = new SourceType([SourceTypes.Value]);
 SourceTypes.CanvasDrawing = new SourceType();
 SourceTypes.Model = new SourceType();
+
+/* Some handy null sources */
+// TEMP - TimeControl will be retired
+nullTimeControlSource = {
+	startEvent: flyingPigEvent,
+	pauseEvent: flyingPigEvent,
+	stopEvent: flyingPigEvent
+};
+nullModelSource = {
+	getVertices: function() {return []},
+	getNormals: function() {return []},
+	getFaces: function() {return []},
+	getTransform: function() {return identityMatrix},
+	changeEvent: flyingPigEvent
+};

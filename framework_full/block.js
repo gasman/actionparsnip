@@ -47,6 +47,8 @@ function Block(defaults, opts) {
 	this.destroyEvent = new Event();
 	this.focusEvent = new Event();
 	this.defocusEvent = new Event();
+	this.selectEvent = new Event();
+	this.deselectEvent = new Event();
 	/* end introspection */
 	
 	this.parameterNames = [];
@@ -63,6 +65,8 @@ function OutputSocket(opts) {
 	this.destroyEvent = new Event();
 	this.id = uniqueId();
 	this.connections = new Set();
+	this.isFocused = false;
+	this.isSelected = false;
 }
 extend(OutputSocket.prototype, {
 	destroy: function() {
@@ -99,6 +103,8 @@ extend(Block.prototype, {
 		this.outputSet.each(callback);
 	},
 	destroy: function() {
+		if (this.isFocused) defocusFocusedBlock();
+		if (this.isSelected) deselectBlock(this);
 		this.inputSet.each(function(input) {input.destroy()});
 		this.outputSet.each(function(output) {output.destroy()});
 		this.destroyEvent.send(this);
@@ -133,17 +139,29 @@ extend(Block.prototype, {
 		}
 		return '{' + paramDeclarations.join(',') + '}';
 	},
-	focus: function() {
+	/* The focus/defocus/select/deselect mechanisms are handled in editor.js. The functions there
+	update global state, and they should be the entry points for when you want to actually focus things, not these. */
+	doFocusActions: function() {
+		this.isFocused = true;
 		for (var parameterName in this.parameters) {
 			this.parameters[parameterName].show();
 		}
 		this.focusEvent.send();
 	},
-	defocus: function() {
+	doDefocusActions: function() {
+		this.isFocused = false;
 		for (var parameterName in this.parameters) {
 			this.parameters[parameterName].hide();
 		}
 		this.defocusEvent.send();
+	},
+	doSelectActions: function() {
+		this.isSelected = true;
+		this.selectEvent.send();
+	},
+	doDeselectActions: function() {
+		this.isSelected = false;
+		this.deselectEvent.send();
 	}
 });
 /* end introspection */

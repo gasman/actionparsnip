@@ -35,17 +35,28 @@ function focusBlock(block) {
 	if (focusedBlock != null) defocusFocusedBlock();
 
 	focusedBlock = block;
-	block.focus();
-	/* deselect this block when it's destroyed */
-	focusedBlock.attachOnDestroy(defocusFocusedBlock);
+	block.doFocusActions();
 }
-
 function defocusFocusedBlock() {
 	if (focusedBlock == null) return;
-	focusedBlock.defocus();
-	/* no need to call deselect on destroy */
-	focusedBlock.detachOnDestroy(defocusFocusedBlock);
+	focusedBlock.doDefocusActions();
 	focusedBlock = null;
+}
+
+var selectedBlocks = new Set();
+function selectBlock(block, deselectOthers) {
+	if (deselectOthers) {
+		selectedBlocks.each(function(block) {deselectBlock(block);});
+	} else {
+		if (selectedBlocks.contains(block)) return;
+	}
+	selectedBlocks.add(block);
+	block.doSelectActions();
+}
+function deselectBlock(block) {
+	if (!selectedBlocks.contains(block)) return;
+	selectedBlocks.remove(block);
+	block.doDeselectActions();
 }
 
 var selectedConnection = null;
@@ -72,11 +83,10 @@ $(window).keypress(function(e) {
 		if (selectedConnection) {
 			selectedConnection.destroy();
 			selectedConnection = null;
-			return false;
-		} else if (selectedBlock) {
-			selectedBlock.destroy();
-			selectedBlock = null;
-			return false;
 		}
+		selectedBlocks.each(function(block) {
+			block.destroy();
+		})
+		return false;
 	}
 })

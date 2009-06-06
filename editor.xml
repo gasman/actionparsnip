@@ -6,6 +6,7 @@
 		<script type="text/javascript" src="editor/jquery.drag.js"></script>
 		<script type="text/javascript" src="editor/jquery.json.js"></script>
 		<script type="text/javascript" src="editor/jquery.dimensions.js"></script>
+		<script type="text/javascript" src="editor/jquery.xml_classes.js"></script>
 		<script type="text/javascript" src="patterns.js"></script>
 		<script type="text/javascript" src="editor/builder.js"></script>
 		<script type="text/javascript" src="framework_full/block_types.js"></script>

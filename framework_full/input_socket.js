@@ -2,7 +2,13 @@ function SingleInputSocket(opts) {
 	var socket = this;
 	this.id = uniqueId();
 	this.name = opts.name;
-	this.fallbackParameter = opts.fallbackParameter;
+	if (opts.fallbackParameter) {
+		this.fallbackParameter = opts.fallbackParameter;
+	} else if (opts.fallbackSource) {
+		this.fallbackParameter = new SourceParameter({source: opts.fallbackSource});
+	} else {
+		this.fallbackParameter = new ConstantParameter({value: opts.default});
+	}
 	this.type = opts.type;
 	this.destroyEvent = new Event();
 	

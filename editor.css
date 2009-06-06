@@ -45,6 +45,9 @@ svg.block_viewer_viewport .block rect {
 	stroke: black;
 }
 svg.block_viewer_viewport .block.focused rect {
+	stroke-dasharray: 1;
+}
+svg.block_viewer_viewport .block.selected rect {
 	fill: #088;
 }
 svg.block_viewer_viewport .block .block_label {

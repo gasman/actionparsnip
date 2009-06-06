@@ -2,16 +2,11 @@ function BoxBlock(opts) {
 	Block.call(this, {}, opts);
 	this.changeEvent = new Event();
 
-	var defaultPositionSource = {
-		get: function() {return [0,0]},
-		changeEvent: flyingPigEvent
-	};
-	
 	var self = this;
 	this.defineInput(new SingleInputSocket({
 		name: 'position',
 		type: SourceTypes.Coordinates,
-		defaultSource: defaultPositionSource,
+		default: [0,0],
 		events: {changeEvent: this.changeEvent.relay},
 		onChangeState: this.changeEvent.relay
 	}));

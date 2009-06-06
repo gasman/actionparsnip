@@ -33,6 +33,12 @@ extend(Set.prototype, {
 		}
 		return false;
 	},
+	contains: function(obj) {
+		for (var i = 0; i < this.members.length; i++) {
+			if (this.members[i] == obj) return true;
+		}
+		return false;
+	},
 	each: function(callback) {
 		/* create temporary list so that things don't get messed up if the callbacks remove elements */
 		var tempMembers = [];
