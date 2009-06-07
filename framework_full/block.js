@@ -5,34 +5,6 @@ function uniqueId() {
 }
 /* end introspection */
 
-function Parameter(opts, value) {
-	this.opts = opts;
-	this.name = opts.name;
-	this.type = opts.type;
-	this.value = value;
-	this.visible = opts.visible;
-	if (this.visible == null) this.visible = true;
-	this.changeEvent = new Event();
-}
-extend(Parameter.prototype, {
-	change: function(value) {
-		this.value = value;
-		this.changeEvent.send(value);
-	},
-	attachOnChange: function(callback) {
-		this.changeEvent.attach(callback);
-	},
-	detachOnChange: function(callback) {
-		this.changeEvent.detach(callback);
-	},
-	export: function() {
-		return $.json.encode(this.value);
-	},
-	equals: function(otherValue) {
-		return this.value == otherValue;
-	}
-})
-
 function Block(defaults, opts) {
 	this.defaults = defaults;
 	this.initialValues = extend({viewPosition: {x:0,y:0}}, defaults, opts);
@@ -131,10 +103,9 @@ extend(Block.prototype, {
 		var paramDeclarations = [];
 		for (var parameterName in this.parameters) {
 			var param = this.parameters[parameterName];
-			if (param.equals(this.defaults[parameterName])) continue;
 			var exportedValue = param.export();
-			if (exportedValue != null) {
-				paramDeclarations.push('\'' + parameterName + '\':' + exportedValue);
+			if (exportedValue != null && exportedValue != this.defaults[parameterName]) {
+				paramDeclarations.push('\'' + parameterName + '\':' + $.json.encode(exportedValue));
 			}
 		}
 		return '{' + paramDeclarations.join(',') + '}';

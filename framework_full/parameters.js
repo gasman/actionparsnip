@@ -39,7 +39,7 @@ extend(VariableParameter.prototype, AbstractParameter.prototype, {
 		this.value = value;
 		this.changeEvent.send();
 	},
-	export: function() {return JSON.serialize(this.value);}
+	export: function() {return this.value;}
 })
 
 InputBoxParameter = function(opts, value) {
