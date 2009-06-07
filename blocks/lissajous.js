@@ -3,7 +3,7 @@ function LissajousBlock(opts) {
 	this.changeEvent = new Event();
 	
 	//this.defineParameter({name: 'amplitude', type: 'range', min: 0, max: 200});
-	this.defineParameter('amplitude', SliderParameter, {min: 0, max: 200});
+	this.defineParameter('amplitude', SliderParameter, {default: 0, min: 0, max: 200});
 	//this.defineParameter('amplitude', ConstantParameter, {value: 100});
 	this.parameters.amplitude.source.changeEvent.attach(this.changeEvent.relay);
 

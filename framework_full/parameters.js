@@ -26,7 +26,7 @@ extend(SourceParameter.prototype, AbstractParameter.prototype);
 
 /* A parameter which holds a value, accessible as this.value and as a ValueSource, which can be changed by the 'set' method */
 VariableParameter = function(opts, value) {
-	this.value = value;
+	this.value = (value == null ? opts.default : value);
 	this.changeEvent = new Event();
 	var self = this;
 	this.source = {
